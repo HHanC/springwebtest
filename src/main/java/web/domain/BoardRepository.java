@@ -2,5 +2,5 @@ package web.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface MemberRepository extends JpaRepository<MemberEntity, Integer> {
+public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 }
