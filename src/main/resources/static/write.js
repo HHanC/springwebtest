@@ -13,10 +13,10 @@ function board(){
         success : function(re){
             if(re == true){
                 alert("작성성공");
-                location.reload();
+                location.href="/";
             }else{
                 alert("작성실패");
-                location.reload();
+                location.href="/";
             }
         }
     });
