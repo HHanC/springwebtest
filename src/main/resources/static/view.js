@@ -1,6 +1,7 @@
 view(bno);
 
 function view(bno){
+//
     $.ajax({
         url : "/view",
         data : {"bno" : bno},
