@@ -1,6 +1,7 @@
 package web.service;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.domain.BoardEntity;
@@ -10,6 +11,7 @@ import web.domain.dto.BoardDto;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BoardService {
@@ -38,15 +40,15 @@ private BoardRepository boardRepository;
         return dtos;
     }
 
-    public BoardDto view(int bno){
-        BoardEntity entity = boardRepository.findById(bno).get();
-
-        BoardDto dtos = BoardDto.builder()
-                .bno(entity.getBno())
-                .bcontent(entity.getBcontent())
-                .bwrite(entity.getBwrite())
-                .build();
-        return dtos;
+    public JSONObject view(int bno){
+        Optional<BoardEntity> optional = boardRepository.findById(bno);
+        JSONObject jsonObject = new JSONObject();
+        BoardDto boardDto = new BoardDto();
+        boardDto.getBno();
+        boardDto.getBcontent();
+        boardDto.getBwrite();
+        jsonObject.put(boardDto);
+        return jsonObject;
     }
 
 

@@ -64,24 +64,12 @@ public class BoardController {
 
     @PostMapping("/view")
     @ResponseBody
-    public boolean view(@RequestParam("bno") int bno,
-            HttpServletResponse response){
-
-        BoardDto dtos = boardService.view(bno);
-        JSONArray jsonArray = new JSONArray();
-
-            JSONObject object = new JSONObject();
-            object.put("bno" , dtos.getBno());
-            object.put("bcontent" , dtos.getBcontent());
-            object.put("bwrite" , dtos.getBwrite());
-            jsonArray.put(object);
-
+    public void view(HttpServletResponse response, @RequestParam("bno") int bno){
         try {
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
-            response.getWriter().print(jsonArray);
+            response.getWriter().print(boardService.view(bno));
         }catch(Exception e){System.out.println(e);}
-        return true;
     }
 
 
