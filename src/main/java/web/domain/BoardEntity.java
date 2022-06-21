@@ -19,4 +19,8 @@ public class BoardEntity {
     private String bwrite;
     private String bpassword;
 
+    @ManyToOne
+    @JoinColumn(name = "cno")
+    private CategoryEntity categoryEntity;
+
 }

@@ -4,15 +4,20 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import web.domain.dto.BoardDto;
 import web.service.BoardService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Controller
 public class BoardController {
+
+    @Autowired
+    private HttpServletRequest request;
 
     @Autowired
     BoardService boardService;
@@ -36,7 +41,7 @@ public class BoardController {
     @GetMapping("/list")
     public String list(){return "list";}
 
-    @PostMapping("/list")
+    @GetMapping("/lists")
     @ResponseBody
     public void lists(HttpServletResponse response){
         List<BoardDto> dtos = boardService.list();
@@ -57,21 +62,69 @@ public class BoardController {
         }catch(Exception e){System.out.println(e);}
     }
 
-    @GetMapping("/view")
-    public String viewpage(){
+    int selectbno = 0;
+
+    @GetMapping("/view/{bno}")
+    public String view(HttpServletResponse response, @PathVariable("bno") int bno ) {
+        request.getSession().setAttribute("bno", bno);
+        selectbno = bno;
         return "view";
     }
 
-    @PostMapping("/view")
-    @ResponseBody
-    public void view(HttpServletResponse response, @RequestParam("bno") int bno){
-        try {
-            JSONObject object = boardService.view(bno);
+    @GetMapping("/getview")
+    public void getview(HttpServletResponse response){
+        int bno = (Integer) request.getSession().getAttribute("bno");
+        try{
             response.setCharacterEncoding("UTF-8");
             response.setContentType("application/json");
-            response.getWriter().print(object);
+            response.getWriter().print(boardService.getview(bno));
         }catch(Exception e){System.out.println(e);}
+    }
+
+    @DeleteMapping("/delete")
+    @ResponseBody
+    public boolean delete(@RequestParam("bno") int bno){return boardService.delete(bno);}
+
+    @GetMapping("/update")
+    public String updates(){return "update";}
+
+    @PutMapping("/update")
+    @ResponseBody
+    public boolean update(BoardDto boardDto){
+        int bno = (Integer) request.getSession().getAttribute("bno");
+        boardDto.setBno(bno);
+        return boardService.update(boardDto);
+    }
+
+    @GetMapping("/getcategorylist")
+    public void getcategorylist(HttpServletResponse response){
+        try {
+            response.setCharacterEncoding("UTF-8");
+            response.setContentType("application/json");
+            response.getWriter().print(boardService.getcategorylist());
+        }catch (Exception e){System.out.println(e);}
     }
 
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

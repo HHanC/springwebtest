@@ -15,6 +15,7 @@ public class BoardDto {
     private String bcontent;
     private String bwrite;
     private String bpassword;
+    private String categoty;
 
     public BoardEntity toentity(){
         BoardEntity boardEntity = BoardEntity.builder()

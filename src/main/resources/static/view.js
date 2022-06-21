@@ -1,21 +1,26 @@
-view(bno);
+view();
 
-function view(bno){
-//
+function view(){
     $.ajax({
-        url : "/view",
-        data : {"bno" : bno},
-        method : "POST",
+        url : "/getview",
         success : function(view){
-            if(view == true){
-            alert("해당 게시물 출력");
-            let html = "";
-                html +=
+            let html =
                 '<span> '+view.bno+' </span>'+
                 '<span> '+view.bcontent+' </span>'+
-                '<span> '+view.bwrite+' </span>';
-            }
+                '<span> '+view.bwrite+' </span>'+
+                '<button onclick="view_delete('+view.bno+')">삭제하기</button>'
             $("#view").html(html);
+        }
+    })
+}
+
+function view_delete(bno){
+    $.ajax({
+        url : "/delete" ,
+        data : {"bno" : bno},
+        method : "delete" ,
+        success : function(re){
+            alert(re);
         }
     })
 }

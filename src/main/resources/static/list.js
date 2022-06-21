@@ -1,20 +1,39 @@
-list();
-
-function list(){
+list(1);
+category_list();
+function list(cno){
     $.ajax({
-        url : "/list",
-        method : "POST",
-        success : function(list){
-        console.log(list);
+        url : "/lists",
+        data : {"cno" : cno} ,
+        method : "get",
+        success : function(lists){
+        console.log(lists);
             let html = "";
-            for(let i = 0; i<list.length; i++){
+            for(let i = 0; i<lists.length; i++){
                 html +=
-                    '<span> '+list[i].bno+' </span>'+
-                    '<a href="/view?bno='+list[i]["bno"]+'"><span> '+list[i].bcontent+' </span></a>'+
-                    '<span> '+list[i].bwrite+' </span> <br>';
+                    '<span> '+lists[i].bno+' </span>'+
+                    '<span><a href="/view/'+lists[i].bno+'"> '+lists[i].bcontent+' </a></span>'+
+                    '<span> '+lists[i].bwrite+' </span> <br>';
             }
             $("#board").html(html);
         }
     })
 }
+
+function category_list(){
+
+    $.ajax({
+        url : "/getcategorylist",
+        success : function(categorylist){
+        console.log(categorylist);
+            let html = "";
+            for(let i=0; i<categorylist.length; i++){
+                html +=
+                    '<button onclick="list('+categorylist[i].cno+')">'+categorylist[i].cname+'</button>';
+            }
+            $("#categorybox").html(html);
+        }
+    })
+
+}
+
 
